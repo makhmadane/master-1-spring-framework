@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Ce fichier est un EXEMPLE pédagogique : il montre comment on pourrait
+    configurer la DataSource, JPA/Hibernate et les transactions en XML pur,
+    SANS passer par la classe Java config.AppConfig.
+
+    Il N'EST PAS utilisé par l'application : il n'est importé nulle part
+    (ni dans web.xml, ni dans spring-servlet.xml). La configuration active
+    reste celle de AppConfig.java (annotations @Configuration / @Bean).
+
+    Pour l'activer un jour (et désactiver AppConfig.java en même temps,
+    sinon les beans seraient déclarés deux fois) :
+      1. Renommer ce fichier en applicationContext.xml
+      2. L'importer dans spring-servlet.xml :
+           <import resource="applicationContext.xml"/>
+      3. Supprimer ou retirer @Configuration sur AppConfig (ou exclure son package
+         du component-scan) pour éviter le doublon de beans.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- Equivalent du bean dataSource() dans AppConfig.java -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/test"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="passer"/>
+    </bean>
+
+    <!-- Equivalent du bean entityManagerFactory() dans AppConfig.java -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="master.entity"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Equivalent du bean transactionManager() dans AppConfig.java -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- Equivalent de @EnableTransactionManagement -->
+    <tx:annotation-driven/>
+
+</beans>

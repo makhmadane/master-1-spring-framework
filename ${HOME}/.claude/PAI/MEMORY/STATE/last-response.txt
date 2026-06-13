@@ -1,0 +1,16 @@
+CRUD complet maintenant :
+
+| Action | Route | Méthode |
+|---|---|---|
+| **C**reate | `/products/new` (formulaire) → POST `/products` | `form()` / `save()` |
+| **R**ead (liste) | `/products` | `list()` |
+| **U**pdate | `/products/edit/{id}` (formulaire pré-rempli) → POST `/products` | `editForm()` / `save()` |
+| **D**elete | `/products/delete/{id}` | `delete()` |
+
+Changements :
+- **`ProductRepositoryImpl.save`** : `persist()` si `id == null` (création), `merge()` sinon (mise à jour) — le même `save()` gère donc les deux cas.
+- **`ProductController`** : nouvelle route `GET /products/edit/{id}` qui charge le produit et réutilise `form-product.jsp`.
+- **`form-product.jsp`** : champ caché `id`, titre dynamique "Ajouter"/"Modifier", champs pré-remplis.
+- **`products.jsp`** : lien "Modifier" ajouté à côté de "Supprimer".
+
+Redémarre Tomcat et teste : liste → modifier un produit → vérifier que ça met à jour (pas de doublon) → supprimer.
