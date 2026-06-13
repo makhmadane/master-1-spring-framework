@@ -35,6 +35,16 @@ public class ProductController {
         return "form-product";
     }
 
+    @GetMapping("/edit/{id}")
+    public String editForm(@PathVariable Long id, Model model) {
+
+        Product product = service.findById(id);
+
+        model.addAttribute("product", product);
+
+        return "form-product";
+    }
+
     @PostMapping
     public String save(@ModelAttribute Product product) {
 

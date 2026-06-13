@@ -19,7 +19,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void save(Product product) {
-        entityManager.persist(product);
+        if (product.getId() == null) {
+            entityManager.persist(product);
+        } else {
+            entityManager.merge(product);
+        }
     }
 
     @Override
