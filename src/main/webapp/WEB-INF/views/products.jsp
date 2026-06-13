@@ -1,16 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: m.lo
-  Date: 01/06/2026
-  Time: 20:14
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
+ <a href="${pageContext.request.contextPath}/products/new">Ajouter un produit</a>
 
-</body>
-</html>
+
+<table>
+    <c:forEach var="product" items="${products}">
+        <tr> <td>${product.id}</td>
+            <td>${product.libelle}</td>
+            <td>${product.prix}</td>
+            <td>
+                <a href="${pageContext.request.contextPath}/products/edit/${product.id}">Modifier</a>
+                <a href="${pageContext.request.contextPath}/products/delete/${product.id}">Supprimer</a>
+            </td> </tr>
+    </c:forEach>
+</table>

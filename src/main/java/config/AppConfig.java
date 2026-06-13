@@ -3,13 +3,14 @@ package config;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.*;
 import org.springframework.orm.jpa.vendor.*;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.example")
 @EnableTransactionManagement
 public class AppConfig {
 
@@ -22,10 +23,12 @@ public class AppConfig {
         ds.setDriverClassName("org.postgresql.Driver");
 
         // URL PostgreSQL
-        ds.setUrl("jdbc:postgresql://localhost:5432/test");
+        ds.setUrl("jdbc:postgresql://localhost:5432/master_1_pring_mvc");
 
         ds.setUsername("postgres");
-        ds.setPassword("root"); // adapte selon ton installation
+        ds.setPassword("passer"); // adapte selon ton installation
+
+        System.out.println("pool");
 
         return ds;
     }
@@ -39,7 +42,7 @@ public class AppConfig {
         em.setDataSource(dataSource());
 
         // package des entités
-        em.setPackagesToScan("com.example.master.entity");
+        em.setPackagesToScan("master.entity");
 
         HibernateJpaVendorAdapter vendorAdapter =
                 new HibernateJpaVendorAdapter();
@@ -53,7 +56,13 @@ public class AppConfig {
         props.put("hibernate.show_sql", "true");
 
         em.setJpaProperties(props);
-
+        System.out.println("entitimanager");
         return em;
+    }
+
+    @Bean public PlatformTransactionManager transactionManager( EntityManagerFactory emf) {
+        JpaTransactionManager txManager = new JpaTransactionManager();
+         txManager.setEntityManagerFactory(emf);
+        return txManager;
     }
 }

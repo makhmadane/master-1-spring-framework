@@ -35,9 +35,17 @@ public class ProductController {
         return "form-product";
     }
 
+    @GetMapping("/edit/{id}")
+    public String form(Model model, @PathVariable int id) {
+
+        model.addAttribute("product", service.findById((long) id));
+
+        return "form-product";
+    }
+
     @PostMapping
     public String save(@ModelAttribute Product product) {
-
+        System.out.println(product.toString());
         service.save(product);
 
         return "redirect:/products";

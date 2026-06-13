@@ -2,6 +2,7 @@ package master.service.impl;
 
 
 import master.entity.Product;
+import master.repository.impl.ProductRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import master.repository.ProductRepository;
@@ -13,7 +14,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository repository;
+    private ProductRepository repository ;
 
 
     @Override

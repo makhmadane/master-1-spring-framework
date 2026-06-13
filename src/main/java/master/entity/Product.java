@@ -18,13 +18,18 @@ public class Product {
     public Product() {
     }
 
-    public Product(String libelle, double prix) {
+    public Product(Long id, String libelle, double prix) {
+        this.id = id;
         this.libelle = libelle;
         this.prix = prix;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLibelle() {
@@ -41,5 +46,14 @@ public class Product {
 
     public void setPrix(double prix) {
         this.prix = prix;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", libelle='" + libelle + '\'' +
+                ", prix=" + prix +
+                '}';
     }
 }
